@@ -4,9 +4,9 @@
 	*
 	* Description
 	*/
-	var dwModule = angular.module('digitalWaveform', []);
+	var app = angular.module('digitalWaveform', []);
 
-	dwModule.controller('WaveformViewController', function () {
+	app.controller('WaveformViewController', function () {
 		var wfb = new WaveformBrain([1, 0, 1, 1]);
 		
 		this.addLogic = function (logic) {
@@ -19,9 +19,12 @@
 		this.digits = wfb;
 	});
 
-	dwModule.directive('waveformDraw', function(){	
+	app.directive('waveformDraw', function(){	
 		return {
 			restrict: 'A',
+			scope: {
+				data: '='
+			}, 
 			link: function (scope, element, attrs) {
 				var ctx = element[0].getContext('2d');
 				var h = attrs.height;
@@ -36,7 +39,7 @@
 
 	            ctx.lineWidth=5;
 	            ctx.stroke();
-	            console.log(attrs.data);
+	            console.log(scope.data);
 			}
 		};
 	});

@@ -17,8 +17,8 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                <button ng-click="waveformView.addLogic(1)" type="button" class="btn btn-primary btn-block">Logical High</button>
-                <button ng-click="waveformView.addLogic(0)" type="button" class="btn btn-default btn-block">Logical Low</button>
+                <button ng-click="waveformView.addLogic(1)" type="button" class="btn btn-primary btn-block">Add Logical High</button>
+                <button ng-click="waveformView.addLogic(0)" type="button" class="btn btn-default btn-block">Add Logical Low</button>
             </div>
             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                 <button ng-click="waveformView.clearAllLogic()" type="button" class="btn btn-danger">Clear all</button>
@@ -30,7 +30,7 @@
                 <br/>
                 <code style="font-size: x-large;">{{waveformView.digits.clock}}</code>
                 <br/>
-                <canvas waveform-draw data="waveformView.digits.clock" width="720" height="30" style="border: 1px dashed gray;"></canvas>
+            	<canvas ng-repeat="digit in waveformView.digits" waveform-draw="digit" width="720" height="30" style="border: 1px dashed gray;"></canvas>
             </div>
         </div>
     </div>

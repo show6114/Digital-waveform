@@ -16,21 +16,19 @@
 <body ng-controller="WaveformViewController as waveformView">
     <div class="container">
         <div class="row">
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                 <button ng-click="waveformView.addLogic(1)" type="button" class="btn btn-primary btn-block">Add Logical High</button>
                 <button ng-click="waveformView.addLogic(0)" type="button" class="btn btn-default btn-block">Add Logical Low</button>
-            </div>
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                <button ng-click="waveformView.clearAllLogic()" type="button" class="btn btn-danger">Clear all</button>
+                <button ng-click="waveformView.clearAllLogic()" type="button" class="btn btn-danger btn-block">Clear all</button>
             </div>
         </div>
+        <br/>
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <code style="font-size: x-large;">{{waveformView.digits.dat}}</code>
-                <br/>
-                <code style="font-size: x-large;">{{waveformView.digits.clk}}</code>
-                <br/>
-            	<canvas ng-repeat="digit in waveformView.digits" waveform-draw="digit" width="720" height="30" style="border: 1px dashed gray;"></canvas>
+            	<canvas ng-repeat="channel in waveformView.waveform.channels" waveform-draw="channel" width="720" height="30" style="border: 1px dashed #ccc;">
+                    <!-- <code style="font-size: x-large;">{{waveformView.waveform.channels.dat}}</code><br/>
+                    <code style="font-size: x-large;">{{waveformView.waveform.channels.clk}}</code>    -->
+                </canvas>
             </div>
         </div>
     </div>

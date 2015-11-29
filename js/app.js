@@ -9,7 +9,7 @@
     app.controller('WaveformViewController', function() {
         var wfb = new WaveformBrain([0, 1]);
 
-        this.digits = wfb;
+        this.waveform = wfb;
 
         this.addLogic = function(logic) {
             wfb.addDigit(logic);
@@ -85,17 +85,19 @@
     // model of digital waveform
     function WaveformBrain(initDdata) {
         // initialize
-        this.dat = initDdata;
-        this.clk = updateClock(initDdata);
+        this.channels = {
+            'dat': initDdata, 
+            'clk': updateClock(initDdata)
+        };
 
         this.addDigit = function(logic) {
-            this.dat.push(logic);
-            this.clk = updateClock(this.dat);
+            this.channels.dat.push(logic);
+            this.channels.clk = updateClock(this.channels.dat);
         };
 
         this.clearAllDigit = function() {
-            this.dat = [];
-            this.clk = [];
+            this.channels.dat = [];
+            this.channels.clk = [];
         }
 
         function updateClock(dat) {

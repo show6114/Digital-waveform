@@ -85,25 +85,25 @@
     // model of digital waveform
     function WaveformBrain(initDdata) {
         // initialize
-        this.ddata = initDdata;
-        this.clock = updateClock(initDdata);
+        this.dat = initDdata;
+        this.clk = updateClock(initDdata);
 
         this.addDigit = function(logic) {
-            this.ddata.push(logic);
-            this.clock = updateClock(this.ddata);
+            this.dat.push(logic);
+            this.clk = updateClock(this.dat);
         };
 
         this.clearAllDigit = function() {
-            this.ddata = [];
-            this.clock = [];
+            this.dat = [];
+            this.clk = [];
         }
 
-        function updateClock(ddata) {
-            var clock = [];
-            for (var i = 0; i < ddata.length; i++) {
-                clock[i] = i % 2;
+        function updateClock(dat) {
+            var clk = [];
+            for (var i = 0; i < dat.length; i++) {
+                clk[i] = i % 2;
             }
-            return clock;
+            return clk;
         };
     }
 })();

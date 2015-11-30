@@ -7,8 +7,8 @@
     var app = angular.module('digitalWaveform', []);
 
     app.controller('WaveformViewController', function() {
-        var wfb = new WaveformBrain([0, 1]);
-
+        var wfb = new WaveformBrain();
+        wfb.addClkOffset(1);
         this.waveform = wfb;
 
         this.addLogic = function(logic) {
@@ -24,17 +24,20 @@
         return {
             restrict: 'A',
             scope: {
-                waveformDraw: '='
+                waveformDraw: '=', 
+                waveformOffset: '='
             },
             link: function(scope, element, attrs) {
                 var ctx = element[0].getContext('2d');
-                var h = Number(attrs.height);
+                var bitHeight = Number(attrs.height);
+                var bitWidth = Number(attrs.width);
 
-                scope.$watchCollection('waveformDraw', function(newValue) {
-                    if (newValue.length > 0)
-                        canvasWaveformDraw(ctx, newValue, h);
+                console.log(scope.waveformOffset);
+                scope.$watchCollection('waveformDraw', function(channelBits) {
+                    if (channelBits.length > 0)
+                        canvasWaveformDraw(ctx, channelBits, bitHeight);
                     else
-                        clearCanvasWaveformDraw(ctx, attrs.width, h);
+                        clearCanvasWaveformDraw(ctx, bitWidth, bitHeight);
                 });
 
                 function canvasWaveformDraw(ctx, data, h) {
@@ -83,23 +86,30 @@
     });
 
     // model of digital waveform
-    function WaveformBrain(initDdata) {
+    function WaveformBrain() {
         // initialize
         this.channels = {
-            'dat': initDdata, 
-            'clk': updateClock(initDdata)
+            'dat': {
+                'bits': [1, 0], 
+                'offset': 0, 
+                'name': 'DATA'}, 
+            'clk': {
+                'bits': [0, 1], 
+                'offset': 0, 
+                'name': 'CLOCK'}
         };
 
         this.addDigit = function(logic) {
-            this.channels.dat.push(logic);
-            this.channels.clk = updateClock(this.channels.dat);
+            this.channels.dat.bits.push(logic);
+            this.channels.clk.bits = updateClock(this.channels.dat.bits);
         };
-
-        this.clearAllDigit = function() {
-            this.channels.dat = [];
-            this.channels.clk = [];
+        this.addClkOffset = function(offset) {
+            this.channels.clk.offset = offset;
         }
-
+        this.clearAllDigit = function() {
+            this.channels.dat.bits = [];
+            this.channels.clk.bits = [];
+        }
         function updateClock(dat) {
             var clk = [];
             for (var i = 0; i < dat.length; i++) {

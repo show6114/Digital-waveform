@@ -8,27 +8,28 @@
     <title>Title Page</title>
     <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
-			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-		<![endif]-->
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
 </head>
 
 <body ng-controller="WaveformViewController as waveformView">
     <div class="container">
         <div class="row">
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                <button ng-click="waveformView.addLogic(1)" type="button" class="btn btn-primary btn-block">Add Logical High</button>
-                <button ng-click="waveformView.addLogic(0)" type="button" class="btn btn-default btn-block">Add Logical Low</button>
+            <div class="col-xs-12 col-sm-3">
+                <button ng-click="waveformView.addLogic(1)" type="button" class="btn btn-primary btn-block">Add High</button>
+                <button ng-click="waveformView.addLogic(0)" type="button" class="btn btn-default btn-block">Add Low</button>
                 <button ng-click="waveformView.clearAllLogic()" type="button" class="btn btn-danger btn-block">Clear all</button>
             </div>
         </div>
         <br/>
         <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            	<canvas ng-repeat="channel in waveformView.waveform.channels" waveform-draw="channel" width="720" height="30" style="border: 1px dashed #ccc;">
-                    <!-- <code style="font-size: x-large;">{{waveformView.waveform.channels.dat}}</code><br/>
-                    <code style="font-size: x-large;">{{waveformView.waveform.channels.clk}}</code>    -->
-                </canvas>
+            <div class="col-xs-12">
+                <div ng-repeat="channel in waveformView.waveform.channels" style="margin-bottom: 1em;">
+                    <strong>{{channel.name}}</strong> <code>{{channel.bits}}</code>
+                    <canvas waveform-draw="channel.bits" waveform-offset="channel.offset" width="720" height="30" style="border: 1px 
+                    dashed #ccc;"></canvas>
+                </div>
             </div>
         </div>
     </div>

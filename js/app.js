@@ -28,27 +28,26 @@
     app.directive('waveformDraw', function() {
         return {
             restrict: 'A',
+            transclude: true,
             scope: {
-                waveformData: '=',
-                waveformOffset: '='
+                waveformDraw: '=',
             },
             link: function(scope, element, attrs) {
                 var ctx = element[0].getContext('2d');
-                var offset = scope.waveformOffset;
                 var box = {
                     'h': Number(attrs.height),
                     'w': Number(attrs.width)
                 };
-
-                scope.$watchCollection('waveformData', function(newValue) {
-                    var dataBits = newValue;
-                    if (dataBits.length > 0)
-                        canvasWaveformDraw(ctx, dataBits, box, offset);
-                    else
+                scope.$watch('waveformDraw', function(newValue, oldValue) {
+                    if (newValue.bits.length > 0) {
+                        if (newValue.offset !== oldValue.offset) clearCanvasWaveformDraw(ctx, box);
+                        canvasWaveformDraw(ctx, newValue.bits, newValue.offset, box);
+                    } else {
                         clearCanvasWaveformDraw(ctx, box);
-                });
+                    }
+                }, true);
 
-                function canvasWaveformDraw(ctxObj, data, boxSize, offset) {
+                function canvasWaveformDraw(ctxObj, data, offset, boxSize) {
                     var h = boxSize.h;
                     var w = h * 1.2;
                     var offsetW = offset * w;
@@ -85,12 +84,11 @@
                     drawLevel();
                     for (var i = 1; i < data.length; i++) {
                         if (getLogic() != data[i]) drawEdge();
-
                         drawLevel();
                     }
 
-                    ctx.lineWidth = 3;
-                    ctx.stroke();
+                    ctxObj.lineWidth = 3;
+                    ctxObj.stroke();
                 }
 
                 function clearCanvasWaveformDraw(ctxObj, boxSize) {

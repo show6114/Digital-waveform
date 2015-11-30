@@ -17,18 +17,27 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-3">
-                <button ng-click="waveformView.addLogic(1)" type="button" class="btn btn-primary btn-block">Add High</button>
-                <button ng-click="waveformView.addLogic(0)" type="button" class="btn btn-default btn-block">Add Low</button>
+                <button ng-click="waveformView.addLogicHigh()" type="button" class="btn btn-primary btn-block">Add High</button>
+                <button ng-click="waveformView.addLogicLow()" type="button" class="btn btn-default btn-block">Add Low</button>
                 <button ng-click="waveformView.clearAllLogic()" type="button" class="btn btn-danger btn-block">Clear all</button>
             </div>
+            <div class="col-xs-12 col-sm-3">
+                <form>
+                    <div class="form-group">
+                        <label>Adjust Clock Offset (%)</label>
+                        <input ng-model="waveformView.clockOffsetValue" id="clock-offset" type="number" min="-100" max="100" class="form-control">
+                        <button ng-click="waveformView.updateClockOffset()" type="button" class="btn btn-default">Update</button>
+                    </div>
+                </form>
+            </div>            
         </div>
         <br/>
         <div class="row">
             <div class="col-xs-12">
                 <div ng-repeat="channel in waveformView.waveform.channels" style="margin-bottom: 1em;">
-                    <strong>{{channel.name}}</strong> <code>{{channel.bits}}</code>
-                    <canvas waveform-draw="channel.bits" waveform-offset="channel.offset" width="720" height="30" style="border: 1px 
-                    dashed #ccc;"></canvas>
+                    <p><strong>{{channel.name}}</strong><code>{{channel.bits}}</code></p>
+                    <canvas waveform-draw waveform-data="channel.bits" waveform-offset="channel.offset" width="720" height="30" style="border: 1px 
+                    dashed #ccc;"></canvas><br/>
                 </div>
             </div>
         </div>

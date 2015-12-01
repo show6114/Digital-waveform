@@ -2,24 +2,32 @@
     var app = angular.module('digitalWaveform', []);
 
     app.controller('WaveformViewController', function() {
-        // initialize
-        this.waveform = new WaveformBrain();
-        this.clockOffsetValue = this.waveform.channels.clk.offset * 100;
+        
+        var brain = new WaveformBrain();
+
+        /***** initializer *****/
+        this.waveform = brain.channels;
+        this.clockOffsetValue = brain.channels.clk.offset * 100;
+        /***** end initializer *****/
 
         this.addLogicHigh = function() {
-            this.waveform.addDigit(1);
+            brain.addDigit(1);
+            this.waveform = brain.channels;
         }
 
         this.addLogicLow = function() {
-            this.waveform.addDigit(0);
+            brain.addDigit(0);
+            this.waveform = brain.channels;
         }
 
         this.clearAllLogic = function() {
-            this.waveform.clearAllDigit();
+            brain.clearAllDigit();
+            this.waveform = brain.channels;
         }
 
         this.updateClockOffset = function() {
-            this.waveform.addClkOffset(this.clockOffsetValue / 100);
+            brain.addClkOffset(this.clockOffsetValue / 100);
+            this.waveform = brain.channels;
         }
     });
 

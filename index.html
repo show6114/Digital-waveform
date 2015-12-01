@@ -34,7 +34,7 @@
         <br/>
         <div class="row">
             <div class="col-xs-12">
-                <div ng-repeat="channel in waveformView.waveform.channels" style="margin-bottom: 1em;">
+                <div ng-repeat="channel in waveformView.waveform" style="margin-bottom: 1em;">
                     <p><strong>{{channel.name}}</strong><code>{{channel.bits}}</code></p>
                     <canvas waveform-draw="channel" width="720" height="30" style="border: 1px 
                     dashed #ccc;"></canvas><br/>

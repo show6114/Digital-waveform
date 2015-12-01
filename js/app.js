@@ -3,26 +3,24 @@
 
     app.controller('WaveformViewController', function() {
         // initialize
-        var wfb = new WaveformBrain();
-        this.clockOffsetValue = wfb.channels.clk.offset * 100;
+        this.waveform = new WaveformBrain();
+        this.clockOffsetValue = this.waveform.channels.clk.offset * 100;
 
         this.addLogicHigh = function() {
-            wfb.addDigit(1);
+            this.waveform.addDigit(1);
         }
 
         this.addLogicLow = function() {
-            wfb.addDigit(0);
+            this.waveform.addDigit(0);
         }
 
         this.clearAllLogic = function() {
-            wfb.clearAllDigit();
+            this.waveform.clearAllDigit();
         }
 
         this.updateClockOffset = function() {
-            wfb.addClkOffset(this.clockOffsetValue / 100);
+            this.waveform.addClkOffset(this.clockOffsetValue / 100);
         }
-
-        this.waveform = wfb;
     });
 
     app.directive('waveformDraw', function() {
@@ -30,7 +28,7 @@
             restrict: 'A',
             transclude: true,
             scope: {
-                waveformDraw: '=',
+                waveformDraw: '='
             },
             link: function(scope, element, attrs) {
                 var ctx = element[0].getContext('2d');
@@ -39,9 +37,12 @@
                     'w': Number(attrs.width)
                 };
                 scope.$watch('waveformDraw', function(newValue, oldValue) {
-                    if (newValue.bits.length > 0) {
-                        if (newValue.offset !== oldValue.offset) clearCanvasWaveformDraw(ctx, box);
-                        canvasWaveformDraw(ctx, newValue.bits, newValue.offset, box);
+                    var newOffset = newValue.offset || 0;
+                    var oldOffset = oldValue.offset || 0;
+                    var newData = newValue.bits;
+                    if (newData.length > 0) {
+                        if (newOffset !== oldOffset) clearCanvasWaveformDraw(ctx, box);
+                        canvasWaveformDraw(ctx, newData, newOffset, box);
                     } else {
                         clearCanvasWaveformDraw(ctx, box);
                     }
